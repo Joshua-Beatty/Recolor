@@ -21,43 +21,61 @@ local function playButtonTouchListener( event )
 
 	end
 end
+local function playButtonTouchListener1( event )
+
+	if ( event.phase == "began" ) then
+		display.getCurrentStage():setFocus( event.target )
+		event.target:setFillColor( 0.9 )
+
+	elseif ( event.phase == "ended" ) then
+		display.getCurrentStage():setFocus( nil )
+
+	composer.gotoScene( "game1" )
+		event.target:setFillColor( 1 )
+
+	end
+end
 
 
 
 local highscore
+local highscore1
 
 local filePath = system.pathForFile( "highScore.txt", system.DocumentsDirectory )
+local filePath1 = system.pathForFile( "highScore1.txt", system.DocumentsDirectory )
 
-local function loadScores()
+local function loadScores(pathOfFile)
 
-	local file = io.open( filePath, "r" )
+	local file = io.open( pathOfFile, "r" )
 
 	if file then
-		 highscore = file:read( "*a" )
+		 newthing = file:read( "*a" )
 		io.close( file ) 
 
 	end
 
-	if (highscore == nil) then
-		highscore = 0
+	if (newthing == nil) then
+		newthing = 0
 	end
+	return newthing
 end
 
 
-local function saveScores(tempScore)
+local function saveScores(pathOfFile, newscore)
 
-	local file = io.open( filePath, "w" )
+	local file = io.open( pathOfFile, "w" )
 
 	if file then
-		file:write(tempScore)
+		file:write(newscore)
 		io.close( file )
 	end
 end
 
---saveScores(0)
-loadScores()
-print(highscore)
--- ---------
+--saveScores(filePath, 0) saveScores(filePath1, 0)
+
+highscore = loadScores(filePath)
+highscore1 = loadScores(filePath1)
+
 --------------------------------------------------------------------------
 -- Scene event functions
 -- -----------------------------------------------------------------------------------
@@ -66,29 +84,41 @@ print(highscore)
 function scene:create( event )
 
 	local sceneGroup = self.view
-	-- Code here runs when the scene is first created but has not yet appeared on screen
+		-- Code here runs when the scene is first created but has not yet appeared on screen
 
 	local background = display.newImageRect(sceneGroup, "background.png",  display.actualContentHeight,  display.actualContentHeight)
 	background.x = display.contentCenterX
 	background.y = display.contentCenterY
 
-	local playButton = display.newRoundedRect(sceneGroup,  display.contentCenterX, display.contentCenterY * 1.33, 600, 225, 75)
+	local playButton = display.newRoundedRect(sceneGroup,  display.contentCenterX, display.contentCenterY * .9, 600, 225, 75)
 	playButton:addEventListener( "touch", playButtonTouchListener )
 	playButton.strokeWidth = 8
 	playButton:setStrokeColor(0)
 
-	local playText = display.newText(sceneGroup, "Play", display.contentCenterX, display.contentCenterY * 1.32, "Zekton Bold.ttf", 150 )
+	local playText = display.newText(sceneGroup, "Easy", display.contentCenterX, display.contentCenterY * 0.9, "Zekton Bold.ttf", 150 )
 	playText:setFillColor(  0 )
 
+	local playButton1 = display.newRoundedRect(sceneGroup,  display.contentCenterX, display.contentCenterY * 1.4, 600, 225, 75)
+	playButton1:addEventListener( "touch", playButtonTouchListener1 )
+	playButton1.strokeWidth = 8
+	playButton1:setStrokeColor(0)
 
-	loadScores()
+	local playText1 = display.newText(sceneGroup, "Hard", display.contentCenterX, display.contentCenterY * 1.4, "Zekton Bold.ttf", 150 )
+	playText1:setFillColor(  0 )
 
-	local highScoreText = display.newText(sceneGroup, "Highscore: " .. highscore, display.contentCenterX, display.contentCenterY * 1.6, "Zekton Bold.ttf", 125 )
+loadScores(filePath, highscore)
+loadScores(filePath, highscore1)
+
+
+	local highScoreText = display.newText(sceneGroup, "Highscore: " .. highscore1, display.contentCenterX, display.contentCenterY * 1.6, "Zekton Bold.ttf", 125 )
+	highScoreText:setFillColor(  1 )
+
+	local highScoreText = display.newText(sceneGroup, "Highscore: " .. highscore, display.contentCenterX, display.contentCenterY * 1.1, "Zekton Bold.ttf", 125 )
 	highScoreText:setFillColor(  1 )
 
 	local logo = display.newImageRect(sceneGroup, "logo.png",  800*1.2,  150*1.2)
 	logo.x = display.contentCenterX
-	logo.y = display.contentCenterY * .5
+	logo.y = display.contentCenterY * .4 
 end
 
 

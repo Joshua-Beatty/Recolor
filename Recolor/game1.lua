@@ -45,7 +45,6 @@ end
 --saveScores(0)
 highscore = loadScores(filePath)
 highscore1 = loadScores(filePath)
-
 -----------
 local gameState = "starting"
 local buttonArray = {}
@@ -89,7 +88,7 @@ wherePlayer = 1
 
 local function listening()
 	buttonArraySize = buttonArraySize + 1
-	table.insert(buttonArray, math.random(1,4))
+	table.insert(buttonArray, math.random(1,9))
 
 	clouseres = {}	
 	for i, v in ipairs(buttonArray) do
@@ -134,9 +133,9 @@ local function gameEnding()
 	darkScreen1.isVisible = true
 	backbutton1.isVisible = true
 	backbuttontext1.isVisible = true
-	if(score.num > tonumber(highscore)) then
-		highscore = tostring(score.num)
-		saveScores(filePath, highscore)
+	if(score.num > tonumber(highscore1)) then
+		highscore1 = tostring(score.num)
+		saveScores(filePath1, highscore1)
 
 	end
 
@@ -191,7 +190,7 @@ local function darken(event)
 		else
 			audio.play(audio.loadSound("a-3.mp3"))
 			audio.play(audio.loadSound("g3.mp3"))
-			audio.play(audio.loadSound("f4.mp3"))
+		audio.play(audio.loadSound("f4.mp3"))
 			setgamestate("ended")
 			gameEnding()
 
@@ -213,41 +212,86 @@ function scene:create( event )
 	background.x = display.contentCenterX
 	background.y = display.contentCenterY
 
-	local buttonOne = display.newRoundedRect(sceneGroup,  display.contentCenterX- 225, display.contentCenterY - 100, 400, 400, 100)
+	local buttonOne = display.newRoundedRect(sceneGroup,  display.contentCenterX - 350, display.contentCenterY - 350, 300, 300, 100)
 	buttonOne:addEventListener( "touch", darken )
 	buttonOne.strokeWidth = 15
 	buttonOne:setStrokeColor(0)
-	buttonOne:setFillColor(1, 1, 0)
-	buttonOne.fillColor = {1, 1, 0}
+	buttonOne:setFillColor(1, 0, 0)
+	buttonOne.fillColor = {1, 0, 0}
 	buttonOne.id = 1
 	buttonOne.sound = audio.loadSound("c4.mp3")
 
-	local buttonTwo = display.newRoundedRect(sceneGroup,  display.contentCenterX+ 225, display.contentCenterY - 100, 400, 400, 100)
+	local buttonTwo = display.newRoundedRect(sceneGroup,  display.contentCenterX, display.contentCenterY - 350, 300, 300, 100)
 	buttonTwo:addEventListener( "touch", darken )
 	buttonTwo.strokeWidth = 15
 	buttonTwo:setStrokeColor(0)
-	buttonTwo:setFillColor(0,0,1)
-	buttonTwo.fillColor = {0, 0, 1}
+	buttonTwo:setFillColor(.239,.051,1)
+	buttonTwo.fillColor = {.239,.051,1}
 	buttonTwo.id = 2
 	buttonTwo.sound = audio.loadSound("d4.mp3")
 
-	local buttonThree = display.newRoundedRect(sceneGroup,  display.contentCenterX- 225, display.contentCenterY + 350, 400, 400, 100)
+	local buttonThree = display.newRoundedRect(sceneGroup,  display.contentCenterX + 350, display.contentCenterY - 350, 300, 300, 100)
 	buttonThree:addEventListener( "touch", darken )
 	buttonThree.strokeWidth = 15
 	buttonThree:setStrokeColor(0)
-	buttonThree:setFillColor(1,0,0)
-	buttonThree.fillColor = {1, 0, 0}
+	buttonThree:setFillColor(1,.051,.624)
+	buttonThree.fillColor = {1,.051,.624}
 	buttonThree.id = 3
 	buttonThree.sound = audio.loadSound("e4.mp3")
 
-	local buttonFour = display.newRoundedRect(sceneGroup,  display.contentCenterX+ 225, display.contentCenterY + 350, 400, 400, 100)
+	local buttonFour = display.newRoundedRect(sceneGroup,  display.contentCenterX - 350, display.contentCenterY, 300, 300, 100)
 	buttonFour:addEventListener( "touch", darken )
 	buttonFour.strokeWidth = 15
 	buttonFour:setStrokeColor(0)
-	buttonFour:setFillColor(0,1,0)
-	buttonFour.fillColor = {0, 1, 0}
+	buttonFour:setFillColor(0.812,1,0.051)
+	buttonFour.fillColor = {0.812,1,0.051}
 	buttonFour.id = 4
 	buttonFour.sound = audio.loadSound("f4.mp3")
+
+	local buttonFive = display.newRoundedRect(sceneGroup,  display.contentCenterX, display.contentCenterY, 300, 300, 100)
+	buttonFive:addEventListener( "touch", darken )
+	buttonFive.strokeWidth = 15
+	buttonFive:setStrokeColor(0)
+	buttonFive:setFillColor(1,0.624,0.051)
+	buttonFive.fillColor = {1,0.624,0.051}
+	buttonFive.id = 5
+	buttonFive.sound = audio.loadSound("g4.mp3")
+
+	local buttonSix = display.newRoundedRect(sceneGroup,  display.contentCenterX + 350, display.contentCenterY, 300, 300, 100)
+	buttonSix:addEventListener( "touch", darken )
+	buttonSix.strokeWidth = 15
+	buttonSix:setStrokeColor(0)
+	buttonSix:setFillColor(.239,1,0.051)
+	buttonSix.fillColor = {.239,1,0.051}
+	buttonSix.id = 6
+	buttonSix.sound = audio.loadSound("a5.mp3")
+
+	local buttonSeven = display.newRoundedRect(sceneGroup,  display.contentCenterX- 350, display.contentCenterY + 350, 300, 300, 100)
+	buttonSeven:addEventListener( "touch", darken )
+	buttonSeven.strokeWidth = 15
+	buttonSeven:setStrokeColor(0)
+	buttonSeven:setFillColor(0.051, 1, 0.341)
+	buttonSeven.fillColor = {0.051, 1, 0.341}
+	buttonSeven.id = 7
+	buttonSeven.sound = audio.loadSound("b5.mp3")
+
+	local buttonEight = display.newRoundedRect(sceneGroup,  display.contentCenterX, display.contentCenterY + 350, 300, 300, 100)
+	buttonEight:addEventListener( "touch", darken )
+	buttonEight.strokeWidth = 15
+	buttonEight:setStrokeColor(0)
+	buttonEight:setFillColor(.812,.051,.7)
+	buttonEight.fillColor = {.812,.051,.7}
+	buttonEight.id = 8
+	buttonEight.sound = audio.loadSound("c5.mp3")
+
+	local buttonNine = display.newRoundedRect(sceneGroup,  display.contentCenterX+ 350, display.contentCenterY + 350, 300, 300, 100)
+	buttonNine:addEventListener( "touch", darken )
+	buttonNine.strokeWidth = 15
+	buttonNine:setStrokeColor(0)
+	buttonNine:setFillColor(0.051,0.431,1)
+	buttonNine.fillColor = {0.051,0.431,1}
+	buttonNine.id = 9
+	buttonNine.sound = audio.loadSound("d5.mp3")
 
 	local countDownText = display.newText(sceneGroup, "3", display.contentCenterX, display.contentCenterY, "Zekton Bold.ttf", 400 )
 	countDownText:setFillColor(1)
@@ -270,13 +314,13 @@ function scene:create( event )
 
 	setupGameEnd(darkenScreen, backButton, backText)
 
-	local scoreText = display.newText(sceneGroup, "Score: 0", display.contentCenterX, 400, "Zekton Bold.ttf", 170 )
+	local scoreText = display.newText(sceneGroup, "Score: 0", display.contentCenterX, 350, "Zekton Bold.ttf", 170 )
 	scoreText:setFillColor(1)
 	scoreText.num = 0
 	tada(scoreText)
 
 
-	buttons = {buttonOne, buttonTwo, buttonThree, buttonFour}
+	buttons = {buttonOne, buttonTwo, buttonThree, buttonFour, buttonFive, buttonSix, buttonSeven, buttonEight, buttonNine}
 
 	start(countDownText)
 end
