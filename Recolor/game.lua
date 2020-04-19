@@ -15,6 +15,16 @@ local highscore1
 local filePath = system.pathForFile( "highScore.txt", system.DocumentsDirectory )
 local filePath1 = system.pathForFile( "highScore1.txt", system.DocumentsDirectory )
 
+
+local function saveScores(pathOfFile, newscore)
+
+	local file = io.open( pathOfFile, "w" )
+
+	if file then
+		file:write(newscore)
+		io.close( file )
+	end
+end
 local function loadScores(pathOfFile)
 
 	local file = io.open( pathOfFile, "r" )
@@ -26,25 +36,18 @@ local function loadScores(pathOfFile)
 	end
 
 	if (newthing == nil) then
-		newthing = 0
+		saveScores(pathOfFile, 0)
+		return loadScores(pathOfFile)
+
 	end
 	return newthing
 end
 
 
-local function saveScores(pathOfFile, newscore)
-
-	local file = io.open( pathOfFile, "w" )
-
-	if file then
-		file:write(newscore)
-		io.close( file )
-	end
-end
 
 --saveScores(0)
 highscore = loadScores(filePath)
-highscore1 = loadScores(filePath)
+highscore1 = loadScores(filePath1)
 
 -----------
 local gameState = "starting"
@@ -137,6 +140,7 @@ local function gameEnding()
 	if(score.num > tonumber(highscore)) then
 		highscore = tostring(score.num)
 		saveScores(filePath, highscore)
+		saveScores(filePath1, highscore1)
 
 	end
 
@@ -162,12 +166,13 @@ end
 
 
 local function darken(event)
-	if ( event.phase == "began" and gameState == "playing") then
-
-		display.getCurrentStage():setFocus( event.target )
+		if ( event.phase == "began" and gameState == "playing") then
+		event.target.TouchStarted = true
 		event.target:setFillColor(  event.target.fillColor[1] - .3 , event.target.fillColor[2] - .3, event.target.fillColor[3] - .3 )
+		display.getCurrentStage():setFocus( event.target )
 
-	elseif ( event.phase == "ended"  and gameState == "playing") then
+	elseif ( event.phase == "ended"  and gameState == "playing" and event.target.TouchStarted == true) then
+		event.target.TouchStarted = false
 		display.getCurrentStage():setFocus( nil )
 		event.target:setFillColor( unpack(event.target.fillColor) )
 		
@@ -279,6 +284,8 @@ function scene:create( event )
 	buttons = {buttonOne, buttonTwo, buttonThree, buttonFour}
 
 	start(countDownText)
+	highscore = loadScores(filePath)
+	highscore1 = loadScores(filePath1)
 end
 
 

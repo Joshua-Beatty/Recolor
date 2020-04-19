@@ -44,6 +44,15 @@ local highscore1
 local filePath = system.pathForFile( "highScore.txt", system.DocumentsDirectory )
 local filePath1 = system.pathForFile( "highScore1.txt", system.DocumentsDirectory )
 
+local function saveScores(pathOfFile, newscore)
+
+	local file = io.open( pathOfFile, "w" )
+
+	if file then
+		file:write(newscore)
+		io.close( file )
+	end
+end
 local function loadScores(pathOfFile)
 
 	local file = io.open( pathOfFile, "r" )
@@ -55,21 +64,15 @@ local function loadScores(pathOfFile)
 	end
 
 	if (newthing == nil) then
-		newthing = 0
+		saveScores(pathOfFile, 0)
+		return loadScores(pathOfFile)
+
 	end
 	return newthing
 end
 
 
-local function saveScores(pathOfFile, newscore)
 
-	local file = io.open( pathOfFile, "w" )
-
-	if file then
-		file:write(newscore)
-		io.close( file )
-	end
-end
 
 --saveScores(filePath, 0) saveScores(filePath1, 0)
 
@@ -105,9 +108,6 @@ function scene:create( event )
 
 	local playText1 = display.newText(sceneGroup, "Hard", display.contentCenterX, display.contentCenterY * 1.4, "Zekton Bold.ttf", 150 )
 	playText1:setFillColor(  0 )
-
-loadScores(filePath, highscore)
-loadScores(filePath, highscore1)
 
 
 	local highScoreText = display.newText(sceneGroup, "Highscore: " .. highscore1, display.contentCenterX, display.contentCenterY * 1.6, "Zekton Bold.ttf", 125 )

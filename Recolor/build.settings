@@ -44,6 +44,10 @@ settings =
 	{
 
 	},
+	splashScreen = 
+	{
+		enable = false
+	},
 
 	--
 	-- Project section

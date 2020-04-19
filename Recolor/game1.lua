@@ -15,21 +15,6 @@ local highscore1
 local filePath = system.pathForFile( "highScore.txt", system.DocumentsDirectory )
 local filePath1 = system.pathForFile( "highScore1.txt", system.DocumentsDirectory )
 
-local function loadScores(pathOfFile)
-
-	local file = io.open( pathOfFile, "r" )
-
-	if file then
-		 newthing = file:read( "*a" )
-		io.close( file ) 
-
-	end
-
-	if (newthing == nil) then
-		newthing = 0
-	end
-	return newthing
-end
 
 
 local function saveScores(pathOfFile, newscore)
@@ -42,9 +27,26 @@ local function saveScores(pathOfFile, newscore)
 	end
 end
 
+local function loadScores(pathOfFile)
+
+	local file = io.open( pathOfFile, "r" )
+
+	if file then
+		 newthing = file:read( "*a" )
+		io.close( file ) 
+
+	end
+
+	if (newthing == nil) then
+		saveScores(pathOfFile, 0)
+		return loadScores(pathOfFile)
+
+	end
+	return newthing
+end
 --saveScores(0)
 highscore = loadScores(filePath)
-highscore1 = loadScores(filePath)
+highscore1 = loadScores(filePath1)
 -----------
 local gameState = "starting"
 local buttonArray = {}
@@ -136,6 +138,7 @@ local function gameEnding()
 	if(score.num > tonumber(highscore1)) then
 		highscore1 = tostring(score.num)
 		saveScores(filePath1, highscore1)
+		saveScores(filePath, highscore)
 
 	end
 
@@ -162,11 +165,12 @@ end
 
 local function darken(event)
 	if ( event.phase == "began" and gameState == "playing") then
-
+		event.target.TouchStarted = true
 		display.getCurrentStage():setFocus( event.target )
 		event.target:setFillColor(  event.target.fillColor[1] - .3 , event.target.fillColor[2] - .3, event.target.fillColor[3] - .3 )
 
-	elseif ( event.phase == "ended"  and gameState == "playing") then
+	elseif ( event.phase == "ended"  and gameState == "playing" and event.target.TouchStarted == true) then
+		event.target.TouchStarted = false
 		display.getCurrentStage():setFocus( nil )
 		event.target:setFillColor( unpack(event.target.fillColor) )
 		
@@ -323,6 +327,8 @@ function scene:create( event )
 	buttons = {buttonOne, buttonTwo, buttonThree, buttonFour, buttonFive, buttonSix, buttonSeven, buttonEight, buttonNine}
 
 	start(countDownText)
+	highscore = loadScores(filePath)
+	highscore1 = loadScores(filePath1)
 end
 
 
